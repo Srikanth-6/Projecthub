@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block title %}Reset {% endblock title %}
+
+{% block content %}
+
+    <main class="formPage my-xl">
+        <div class="content-box">
+            <div class="formWrapper">
+                <a class="backButton" href="{% url 'login' %}"><i class="im im-angle-left"></i></a>
+                <br>
+                <h1>Enter new password</h1>
+            <p>Please enter your new password twice so we can verify you typed it in correctly.</p>
+            <br>
+                <form class="form" method="POST">
+                    <!-- Input:Text -->
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form__field">
+                        <label for="formInput#text">{{field.label}}: </label>
+                        {{field}}
+                        <br>
+                        {% if field.help_text %}
+                            <small>{{field.help_text}}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock content %}

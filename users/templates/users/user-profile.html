@@ -1,0 +1,124 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+  <!-- Main Section -->
+  <main class="profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <img class="avatar avatar--xl" src="{{profilex.profile_image.url}}" />
+              <h2 class="dev__name">{{profilex.name}}</h2>
+              <p class="dev__title">{{profilex.short_intro}}</p>
+              <p class="dev__location">{{profilex.location}}</p>
+              <ul class="dev__social">
+                {% if profilex.social_github %}
+                <li>
+                  <a title="Github" href="{{profilex.social_github}}" target="_blank"><i class="im im-github"></i></a>
+                </li>
+                {% endif %}
+                {% if profilex.social_twitter %}
+                <li>
+                  <a title="Twitter" href="{{ profilex.twitter}}" target="_blank"><i class="im im-twitter"></i></a>
+                </li>
+                {% endif %}
+                {% if profilex.social_linkedin %}
+                <li>
+                  <a title="LinkedIn" href="{{profilex.linkedin}}" target="_blank"><i class="im im-linkedin"></i></a>
+                </li>
+                {% endif %}
+                {% if profilex.social_website %}
+                <li>
+                  <a title="Personal Website" href="#" target="_blank"><i class="im im-globe"></i></a>
+                </li>
+                {% endif %}
+              </ul>
+              {% if request.user.profile.id != profilex.id %}
+              <a href="{% url 'create-message' profilex.id %}" class="btn btn--sub btn--lg">Send Message </a>              
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">About Me</h3>
+            <p class="devInfo__about">
+              {{profilex.short_intro}}
+              <br />
+              it almost always stumps them,” Merrill says. It might seem like an easy win—after all, you know all about yourself!—but responding to this invitation to talk about you in the context of a job interview can feel stressful and complicated. “It’s challenging because it is broad, open-ended
+              <br/>
+              t lets them ease into the actual interviewing,” says leadership development coach Alina Campos, founder of Rising. “Often when the conversation starts it’s a lot of small talk and it’s a way to transition into it,” especially for less seasoned recruiters or hiring managers. “The interviewee’s nervous but the interviewer’s trying to get their bearings 
+            </p>
+          </div>
+          <div class="devInfo">
+            {% if topskills  %}
+            <h3 class="devInfo__title">Skills</h3>
+            <div class="devInfo__skills">
+              {% for skill in topskills %}
+              <div class="devSkill">
+                <h4 class="devSkill__title">{{skill.name}}</h4>
+                <p class="devSkill__info">
+                  {{skill.description}}
+                </p>
+              </div>
+              {% endfor %}
+            {% endif %}
+            {% if topskills %}
+              <h3 class="devInfo__subtitle">Other Skills</h3>
+              <div class="devInfo__otherSkills">
+                {% for skill in otherskills %}
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{skill.name}}</small>
+                </span>
+                {% endfor %}
+              </div>
+            {% elif otherskills%}
+              <h3 class="devInfo__subtitle">Skills</h3>
+              <div class="devInfo__otherSkills">
+                {% for skill in otherskills %}
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{skill.name}}</small>
+                </span>
+                {% endfor %}
+              </div>
+            {% endif %}
+            </div>
+          </div>
+          <div class="devInfo">
+            <h3 class="devInfo__title">Projects</h3>
+            <div class="grid grid--two">
+              {% for project in profilex.projects_set.all %}
+              <div class="column">
+                <div class="card project">
+                  <a href="{% url 'project' project.id %}" class="project">
+                    <img class="project__thumbnail" src="{{project.ImageURL}}" alt="project thumbnail" />
+                    <div class="card__body">
+                      <h3 class="project__title">{{project.title}}</h3>
+                      <p><a class="project__author" href="{% url 'user-profile' project.owner.id %}">{{project.owner}}</a></p>
+                      <p class="project--rating">
+                        <span style="font-weight: bold;">{{project.vote_ratio}}</span> Postitive
+                        Feedback ({{project.vote_total}} Vote{{project.vote_total |pluralize:"s"}})
+                      </p>
+                      <div class="project__tags">
+                        {% for tag in project.tags.all %}
+                        <span class="tag tag--pill tag--main">
+                          <small>{{tag}}</small>
+                        </span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock content %}
